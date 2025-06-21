@@ -10,6 +10,7 @@ def driver(request):
     driver = None
     with allure.step(f'Запуск браузера {request.param}'):
         if request.param == "firefox":
+
             driver = webdriver.Firefox()
             driver.maximize_window()
             driver.get(PageUrls.HOME_PAGE)

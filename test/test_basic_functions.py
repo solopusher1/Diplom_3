@@ -12,8 +12,10 @@ class TestBasicFunctions:
     def test_click_to_constructor_button_open_home_page(self, driver):
         login_page = LoginPage(driver)
         login_page.open()
+
         header_page = HeaderPage(driver)
         header_page.click_to_constructor_button()
+
         main_page = MainPage(driver)
 
         assert main_page.check_visibility_of_make_burger_header(), "Заголовок не найден"
@@ -23,8 +25,10 @@ class TestBasicFunctions:
     def test_click_to_order_feed_button_open_order_feed_page(self, driver):
         login_page = LoginPage(driver)
         login_page.open()
+
         header_page = HeaderPage(driver)
         header_page.click_to_order_feed_button()
+
         order_feed_page = OrderFeedPage(driver)
 
         assert order_feed_page.check_current_url(), "Урл не соответствует ожидаемому значению"

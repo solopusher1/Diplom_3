@@ -1,3 +1,5 @@
+from time import sleep
+
 import allure
 
 from src.pages.login_page import LoginPage
@@ -31,6 +33,7 @@ class TestOrderFeed:
         main_page.check_visibility_of_ingredient()
         main_page.move_ingredient_to_constructor_field()
         main_page.click_to_make_order_button()
+        main_page.wait_for_visibility_of_loading_page_animation()
         main_page.wait_for_invisibility_of_loading_page_animation()
         order_id = main_page.get_order_id()
         main_page.click_to_close_button_of_order_was_placed_popup()
@@ -52,8 +55,11 @@ class TestOrderFeed:
         login_page.fill_the_password_field(password)
         login_page.click_to_enter_button()
         header_page = HeaderPage(driver)
+        #sleep(1)
+        header_page.wait_for_order_feed_button_to_be_presenst()
         header_page.click_to_order_feed_button()
         order_feed_page = OrderFeedPage(driver)
+        #sleep(1)
         order_feed_page.check_all_time_order_count_is_visible()
         order_count = order_feed_page.get_all_time_order_count()
         header_page.click_to_constructor_button()
@@ -61,6 +67,7 @@ class TestOrderFeed:
         main_page.check_visibility_of_ingredient()
         main_page.move_ingredient_to_constructor_field()
         main_page.click_to_make_order_button()
+        main_page.wait_for_visibility_of_loading_page_animation()
         main_page.wait_for_invisibility_of_loading_page_animation()
         main_page.click_to_close_button_of_order_was_placed_popup()
         header_page.click_to_order_feed_button()
@@ -88,6 +95,7 @@ class TestOrderFeed:
         main_page.check_visibility_of_ingredient()
         main_page.move_ingredient_to_constructor_field()
         main_page.click_to_make_order_button()
+        main_page.wait_for_visibility_of_loading_page_animation()
         main_page.wait_for_invisibility_of_loading_page_animation()
         main_page.click_to_close_button_of_order_was_placed_popup()
         header_page.click_to_order_feed_button()

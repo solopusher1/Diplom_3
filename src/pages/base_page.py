@@ -1,9 +1,11 @@
+from time import sleep
+
 import allure
 from seletools.actions import drag_and_drop
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.common.exceptions import ElementClickInterceptedException
-from time import sleep
+from selenium.common.exceptions import StaleElementReferenceException, TimeoutException, ElementClickInterceptedException
+from selenium.webdriver.common.action_chains import ActionChains
 
 class BasePage:
 
@@ -24,8 +26,10 @@ class BasePage:
 
     @allure.step('Ожидание видимости элемента')
     def wait_for_visibility_of_element(self, locator):
-        return WebDriverWait(self.driver, 3).until(EC.visibility_of_element_located(locator))
-
+        return WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(locator))
+    def wait_presence_of_element(self, locator):
+        return WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located(locator))
     @allure.step('Ожидание кликабельности элемента')
     def wait_for_element_to_be_clickable(self, locator):
         WebDriverWait(self.driver, 3).until(EC.element_to_be_clickable(locator))
@@ -38,15 +42,27 @@ class BasePage:
     def filling_the_field(self, locator, value):
         self.driver.find_element(*locator).send_keys(value)
 
+
+
     @allure.step('Клик по элементу с использованием нескольких попыток в случае вызова исключения')
-    def click_to_element_few_tries(self, locator):
+    def click_to_element_few_tries(self, locator, timeout=10):
         attempts = 3
         for _ in range(attempts):
             try:
+                element = WebDriverWait(self.driver, timeout).until(
+                    EC.element_to_be_clickable(locator))
+                if 'firefox' in self.driver.capabilities['browserName'].lower():
+                    # Для Firefox используем ActionChains с явным перемещением
+                    ActionChains(self.driver) \
+                        .move_to_element(element).perform()
+
+                else:
+                    pass
+
                 self.driver.find_element(*locator).click()
                 break  # Успешный клик, завершаем цикл
-            except ElementClickInterceptedException:
-                sleep(2)  # Ожидание перед следующей попыткой
+            except TimeoutException:
+                pass
 
     @allure.step('Ожидание невидимости элемента')
     def wait_for_invisibility_of_element(self, locator):

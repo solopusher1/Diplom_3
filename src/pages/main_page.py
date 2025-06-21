@@ -60,6 +60,10 @@ class MainPage(BasePage):
     def wait_for_invisibility_of_loading_page_animation(self):
         return self.wait_for_invisibility_of_element(self.locators.LOADING_PAGE_ANIMATION)
 
+    @allure.step('Ждем, когда появится анимация загрузки страницы')
+    def wait_for_visibility_of_loading_page_animation(self):
+        return self.wait_for_visibility_of_element(self.locators.LOADING_PAGE_ANIMATION)
+
     @allure.step('Клик по крестику на попапе "Заказ оформлен"')
     def click_to_close_button_of_order_was_placed_popup(self):
         return self.click_to_element_few_tries(self.locators.ORDER_WAS_PLACED_POPUP_CLOSE_BUTTON)
